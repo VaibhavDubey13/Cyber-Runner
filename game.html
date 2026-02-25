@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CYBER MARIO — OFFLINE RUNNER</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap');
+  * { margin:0; padding:0; box-sizing:border-box; }
+  :root {
+    --cyan:#00f5ff; --pink:#ff006e; --yellow:#ffbe0b;
+    --purple:#8338ec; --dark:#020010; --cyanDim:#004a50;
+  }
+  html,body {
+    width:100%;height:100%;
+    background:var(--dark);
+    display:flex;flex-direction:column;
+    align-items:center;justify-content:center;
+    overflow:hidden;font-family:'Orbitron',monospace;
+    user-select:none;
+  }
+  body::before {
+    content:'';position:fixed;inset:0;
+    background-image:
+      linear-gradient(rgba(0,245,255,0.06) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(0,245,255,0.06) 1px,transparent 1px);
+    background-size:40px 40px;
+    animation:gs 3s linear infinite;z-index:0;
+  }
+  @keyframes gs { to { background-position:40px 40px; } }
+  body::after {
+    content:'';position:fixed;inset:0;
+    background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.12) 2px,rgba(0,0,0,0.12) 4px);
+    pointer-events:none;z-index:100;
+  }
+  .gc { position:relative;z-index:10;display:flex;flex-direction:column;align-items:center;width:100%; }
+  .hud {
+    display:flex;justify-content:space-between;align-items:center;
+    width:90vw;max-width:1400px;padding:10px 20px;
+    background:rgba(0,0,0,0.75);
+    border:1px solid var(--cyan);border-bottom:none;border-radius:4px 4px 0 0;
+    box-shadow:0 0 20px rgba(0,245,255,0.3),inset 0 0 20px rgba(0,245,255,0.05);
+  }
+  .htitle {
+    font-size:11px;font-weight:900;color:var(--cyan);letter-spacing:3px;
+    text-shadow:0 0 10px var(--cyan),0 0 20px var(--cyan);
+    animation:glitch 4s ease-in-out infinite;
+  }
+  @keyframes glitch {
+    0%,90%,100%{text-shadow:0 0 10px var(--cyan),0 0 20px var(--cyan);transform:none}
+    92%{text-shadow:-2px 0 var(--pink),2px 0 var(--cyan);transform:skewX(-1deg)}
+    94%{text-shadow:2px 0 var(--pink),-2px 0 var(--cyan);transform:skewX(1deg)}
+  }
+  .hscores{display:flex;gap:28px;}
+  .sb{text-align:center;}
+  .sl{font-family:'Share Tech Mono',monospace;font-size:7px;color:rgba(0,245,255,0.55);letter-spacing:2px;margin-bottom:2px;}
+  .sv{font-size:15px;font-weight:700;color:var(--yellow);text-shadow:0 0 8px var(--yellow);font-family:'Share Tech Mono',monospace;}
+  .hlives{font-size:17px;}
+  .cw {
+    position:relative;
+    width:90vw;max-width:1400px;
+    box-shadow:0 0 0 1px var(--cyan),0 0 30px rgba(0,245,255,0.4),0 0 60px rgba(0,245,255,0.15);
+  }
+  canvas{display:block;image-rendering:pixelated;width:100%;height:auto;}
+  .bb {
+    width:90vw;max-width:1400px;padding:6px 20px;
+    background:rgba(0,0,0,0.75);
+    border:1px solid var(--cyan);border-top:1px solid rgba(0,245,255,0.25);
+    border-radius:0 0 4px 4px;
+    display:flex;justify-content:center;gap:32px;
+  }
+  .kh{font-family:'Share Tech Mono',monospace;font-size:9px;color:rgba(0,245,255,0.5);letter-spacing:1px;}
+  .kh kbd{background:rgba(0,245,255,0.12);border:1px solid var(--cyan);padding:1px 5px;border-radius:3px;color:var(--cyan);font-family:inherit;}
+  /* Corner accents */
+  .cn{position:absolute;width:12px;height:12px;border-color:#ff006e;border-style:solid;}
+  .cn.tl{top:0;left:0;border-width:2px 0 0 2px;}
+  .cn.tr{top:0;right:0;border-width:2px 2px 0 0;}
+  .cn.bl{bottom:0;left:0;border-width:0 0 2px 2px;}
+  .cn.br{bottom:0;right:0;border-width:0 2px 2px 0;}
+</style>
+</head>
+<body>
+<div class="gc">
+  <div class="hud">
+    <div class="htitle">⚡ CYBER MARIO</div>
+    <div class="hscores">
+      <div class="sb"><div class="sl">SCORE</div><div class="sv" id="sScore">00000</div></div>
+      <div class="sb"><div class="sl">BEST</div><div class="sv" id="sBest">00000</div></div>
+      <div class="sb"><div class="sl">GEMS</div><div class="sv" id="sGems">00</div></div>
+    </div>
+    <div class="hlives" id="sLives">❤️❤️❤️</div>
+  </div>
+  <div class="cw">
+    <div class="cn tl"></div><div class="cn tr"></div>
+    <div class="cn bl"></div><div class="cn br"></div>
+    <canvas id="c" width="1400" height="420"></canvas>
+  </div>
+  <div class="bb">
+    <span class="kh"><kbd>SPACE</kbd>/<kbd>↑</kbd> Jump · Double Jump ON</span>
+    <span class="kh"><kbd>↓</kbd> Duck</span>
+    <span class="kh">CLICK / TAP also works</span>
+  </div>
+</div>
+
+<script src="game.js"></script>
+</body>
+</html>
